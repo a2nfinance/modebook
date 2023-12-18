@@ -1,0 +1,70 @@
+{
+  "name": "modebook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev -p 8060",
+    "build": "next build",
+    "start": "next start -p 8060"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@reduxjs/toolkit": "^1.8.6",
+    "alchemy-sdk": "^3.1.0",
+    "antd": "^5.0.0",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "next": "^13.4.10",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
+    "react-redux": "^8.0.4",
+    "viem": "^1.19.10",
+    "wagmi": "^1.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^12.20.55",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "eslint": "^8.46.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "5.0.4",
+    "webpack-cli": "^4.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a2nfinance/modebook.git"
+  },
+  "keywords": [
+    "a2n",
+    "ModeBook",
+    "Sepolia",
+    "OrderBook"
+  ],
+  "author": "a2n.finance",
+  "license": "BSL",
+  "bugs": {
+    "url": "https://github.com/a2nfinance/modebook/issues"
+  },
+  "homepage": "https://github.com/a2nfinance/modebook#readme",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browser": {
+    "fs": false,
+    "path": false
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
