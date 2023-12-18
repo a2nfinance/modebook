@@ -45,17 +45,17 @@ export default function Index() {
 
     return (
         client && <>
-            {/* <Alert style={{ borderRadius: 0, border: 0, textAlign: "center" }} type="info" message={
+            <Alert style={{ borderRadius: 0, border: 0, textAlign: "center" }} type="info" message={
                 <Text>
-                    Welcome to OneMes! Connect your wallet and establish a OneMes account to <b>seamlessly transfer tokens online or offline</b>. Utilize <b>SMS or our Telegram chatbot</b> for hassle-free token transfers.
+                    Welcome to ModeBook! You can use this application for testing on the Sepolia.Mode testnet.
                 </Text>
-            } /> */}
+            } />
             <Card
                 //@ts-ignore
                 style={ConnectWalletStyle}>
                 <Space direction="vertical" style={{ width: "100%", textAlign: "center" }}>
-                    <Title level={3}>ONE MES</Title>
-                    <Text>Instant Token Transfers with Just One Message: Simplifying Crypto Transactions, Anywhere, Anytime!</Text>
+                    <Title level={3}>MODEBOOK</Title>
+                    <Text>Simplified Trading, Empowered Users – Explore Decentralized Exchange with Mode Orderbook.</Text>
                     {connectors.map((connector) => (
                         <Button
                             style={{ width: "100%" }}

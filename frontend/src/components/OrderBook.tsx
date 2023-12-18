@@ -1,5 +1,5 @@
 import { Card, Divider, Table } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/controller/hooks";
 import { useAccount, useNetwork, useWalletClient } from "wagmi";
 import { readContract } from "@wagmi/core";
@@ -9,6 +9,7 @@ import { contractAddresses } from "src/configs/contractAddresses";
 import { setBooks } from "src/controller/book/bookSlice";
 let interval = null;
 export const OrderBook = () => {
+    const [tableLoading, setTableLoading] = useState(true);
     const { chain } = useNetwork();
     const { sellOB, buyOB } = useAppSelector(state => state.book);
     const dispatch = useAppDispatch();
@@ -24,7 +25,8 @@ export const OrderBook = () => {
             functionName: "getBookNodes"
         })
         // @ts-ignore
-        dispatch(setBooks({ sellOB: books[0], buyOB: books[1] }))
+        dispatch(setBooks({ sellOB: books[0], buyOB: books[1] }));
+        setTableLoading(false);
 
     }
     useEffect(() => {
@@ -70,6 +72,7 @@ export const OrderBook = () => {
     return (
         <Card title={"Orderbook (Sell/Buy)"} style={{ height: "455px", overflow: "auto" }}>
             <Table
+                loading={tableLoading}
                 bordered={false}
                 pagination={false}
                 columns={sellOBColumns}
@@ -79,6 +82,7 @@ export const OrderBook = () => {
             />
 
             <Table
+                loading={tableLoading}
                 bordered={false}
                 showHeader={false}
                 pagination={false}
