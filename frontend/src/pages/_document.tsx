@@ -4,9 +4,9 @@ export default function Document() {
     return (
         <Html lang='en'>
             <Head>
-                <title>OneMes</title>
+                <title>ModeBook</title>
                 <meta name="title" content="ModeBook" />
-                <meta name="description" content="Order Book on Mode!" />
+                <meta name="description" content="Order Book on Mode Blockchain!" />
                 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 {/* <link
                     rel="stylesheet"

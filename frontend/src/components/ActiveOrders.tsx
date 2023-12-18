@@ -52,7 +52,13 @@ export const ActiveOrders = () => {
             title: 'Type',
             dataIndex: 'type',
             key: 'type',
-
+            render: (type: string) => {
+                if (type === "SELL") {
+                    return <span style={{ color: "red" }}>{type}</span>
+                } else {
+                    return <span style={{ color: "#3a2ad3" }}>{type}</span>
+                }
+            }
         },
         {
             title: 'Price (USD)',

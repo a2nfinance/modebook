@@ -1,11 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-import accountReducer from "./account/accountSlice";
 import activeOrderReducer from "./order/activeOrderSlice";
 import bookReducer from "./book/bookSlice";
 export function makeStore() {
     return configureStore({
         reducer: {
-            account: accountReducer,
             activeOrder: activeOrderReducer,
             book: bookReducer
         },

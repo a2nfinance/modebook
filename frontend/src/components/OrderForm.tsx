@@ -1,5 +1,5 @@
 import { readContract, waitForTransaction, writeContract } from "@wagmi/core";
-import { Button, Card, Col, Flex, Form, Input, Row, Space } from "antd";
+import { Button, Card, Col, Flex, Form, Input, Row, Space, notification } from "antd";
 import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import erc20ABI from "src/abis/erc20.json";
@@ -7,6 +7,7 @@ import pairABI from "src/abis/pair.json";
 import { contractAddresses } from "src/configs/contractAddresses";
 import { useAccount, useNetwork } from "wagmi";
 export const OrderForm = () => {
+    const [api, contextHolder] = notification.useNotification();
     const { address } = useAccount();
     const { chain } = useNetwork();
     const [ethSize, setEthSize] = useState(null);
@@ -101,7 +102,7 @@ export const OrderForm = () => {
                 abi: erc20ABI,
                 functionName: "approve",
                 account: address,
-                args: [contractAddresses.pair, ethers.utils.parseUnits(ethSize)]
+                args: [contractAddresses.pair, ethers.utils.parseUnits(ethSize.toString())]
             })
             await waitForTransaction({
                 hash: approveHash
@@ -114,13 +115,25 @@ export const OrderForm = () => {
                 abi: pairABI,
                 functionName: "newSellOrder",
                 account: address,
-                args: [floorPriceInCents, ethers.utils.parseUnits(ethSize), priceIndex] // 16: because the price has been converted to cents (price x 100)
+                args: [floorPriceInCents, ethers.utils.parseUnits(ethSize.toString()), priceIndex] // 16: because the price has been converted to cents (price x 100)
             })
 
             await waitForTransaction({
                 hash: sellOrderHash
             })
+            api.open({
+                type: "success",
+                message: 'Create a sell order',
+                description:
+                    'Create a sell order successful!'
+            })
         } catch (e) {
+            api.open({
+                type: "error",
+                message: 'Create a sell order',
+                description:
+                    'Fail to create a sell order!'
+            })
             console.log(e)
         }
         setSelling(false);
@@ -200,13 +213,25 @@ export const OrderForm = () => {
                 abi: pairABI,
                 functionName: "newBuyOrder",
                 account: address,
-                args: [floorPriceInCents, ethers.utils.parseUnits(ethSize, 18), priceIndex] // 16: because the price has been converted to cents (price x 100)
+                args: [floorPriceInCents, ethers.utils.parseUnits(ethSize.toString()), priceIndex] // 16: because the price has been converted to cents (price x 100)
             })
 
             await waitForTransaction({
                 hash: buyOrderHash
             })
+            api.open({
+                type: "success",
+                message: 'Create a buy order',
+                description:
+                    'Create a buy order successful!'
+            })
         } catch (e) {
+            api.open({
+                type: "error",
+                message: 'Create a buy order',
+                description:
+                    'Fail to create a buy order!'
+            })
             console.log(e)
         }
         setBuying(false);
@@ -214,6 +239,7 @@ export const OrderForm = () => {
 
     return (
         <Card title={"Limit"} style={{ height: "455px" }}>
+            {contextHolder}
             <Form layout="vertical">
                 <Row gutter={12}>
                     <Col span={12}>
@@ -236,10 +262,10 @@ export const OrderForm = () => {
             </Form>
             <Space direction="vertical" style={{ width: "100%", marginTop: 70, backgroundColor: "#000000", borderRadius: 15 }}>
                 <Flex justify="space-between" style={{ padding: "2px 5px" }}>
-                    <span>Fee (0.1%)</span> <span>{usdSize ? usdSize * 0.001 : "N/A"} USD</span>
+                    <span>Fee (0.1%)</span> <span>{usdSize ? (usdSize * 0.001).toFixed(2) : "N/A"} USD</span>
                 </Flex>
                 <Flex justify="space-between" style={{ padding: "2px 5px" }}>
-                    <span>Order value</span> <span>{usdSize ? usdSize * 0.999 : "N/A"} USD</span>
+                    <span>Order value</span> <span>{usdSize ? (usdSize * 0.999).toFixed(2) : "N/A"} USD</span>
                 </Flex>
                 <Flex justify="space-between">
                     <Button size="large" type="primary" loading={selling} onClick={() => handleSell()} style={{ width: "49%" }}>SELL</Button>

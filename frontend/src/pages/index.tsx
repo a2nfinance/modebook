@@ -17,33 +17,24 @@ export default function Index() {
     const [client, setClient] = useState(false);
     const { address, isConnected } = useAccount()
     const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
-    const { accounts } = useAppSelector(state => state.account);
-    const dispatch = useAppDispatch();
-
-    // async function getCurrentAccounts(address) {
-    //     const accountsList = await getAccounts(address);
-    //     dispatch(setAccounts(accountsList));
-    // }
 
     useEffect(() => {
         setClient(true);
-        // getCurrentAccounts(address);
     }, [address])
 
 
     if (isConnected && client) {
         return (
-            <Row gutter={2} style={{height: "100%", padding: 10, boxSizing: "border-box"}}>
+            <Row gutter={2} style={{ height: "100%", padding: 10, boxSizing: "border-box" }}>
 
                 <Col span={16}>
                     <Chart />
                 </Col>
                 <Col span={8}>
-                    
 
-                        <Main />
-                        {/* <ExtraButtons /> */}
-                   
+
+                    <Main />
+
                 </Col>
 
 
