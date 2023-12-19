@@ -66,7 +66,7 @@ export const OrderBook = () => {
             title: 'Size (WETH)',
             dataIndex: 'volume',
             key: 'volume',
-            render: (_, record) => (ethers.utils.formatEther(BigNumber.from(record.volume).div(record.price / 100).toString()))
+            render: (_, record) => (ethers.utils.formatEther(BigNumber.from(record.volume).div(record.price).mul(100).toString()))
         },
     ];
     return (

@@ -137,7 +137,7 @@ export const OrderForm = () => {
             console.log(e)
         }
         setSelling(false);
-    }, [ethSize, usdSize, limitPrice])
+    }, [ethSize, usdSize, limitPrice, selling, address])
 
     const handleBuy = useCallback(async () => {
         try {
@@ -235,7 +235,7 @@ export const OrderForm = () => {
             console.log(e)
         }
         setBuying(false);
-    }, [ethSize, usdSize, limitPrice, buying])
+    }, [ethSize, usdSize, limitPrice, buying, address])
 
     return (
         <Card title={"Limit"} style={{ height: "455px" }}>

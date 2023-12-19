@@ -126,7 +126,7 @@ export const ActiveOrders = () => {
             key: 'volume',
             render: (_, record) => {
                 if (record.type === "BUY") {
-                    return ethers.utils.formatEther(BigNumber.from(record.volume).div(record.price / 100).toString())
+                    return ethers.utils.formatEther(BigNumber.from(record.volume).div(record.price).mul(100).toString())
                 } else {
                     return ethers.utils.formatEther(record.volume)
                 }
@@ -140,7 +140,7 @@ export const ActiveOrders = () => {
                 if (record.type === "BUY") {
                     return ethers.utils.formatEther(record.volume)
                 } else {
-                    return record.price / 100 * parseFloat(ethers.utils.formatEther(record.volume))
+                    return (record.price / 100 * parseFloat(ethers.utils.formatEther(record.volume))).toFixed(3)
                 }
             }
         },
