@@ -244,12 +244,12 @@ export const OrderForm = () => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <Form.Item label="ETH">
-                            <Input size="large" type="number" onChange={(e) => handleChangeEth(e.target.value)} value={ethSize} placeholder="0.000" suffix="ETH" />
+                            <Input size="large" type="number" onChange={(e) => handleChangeEth(e.target.value)} value={ethSize} placeholder="0.000" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="USDM">
-                            <Input size="large" type="number" value={usdSize} onChange={(e) => handleChangeUsd(e.target.value)} placeholder="0.00" suffix="USDM" />
+                            <Input size="large" type="number" value={usdSize} onChange={(e) => handleChangeUsd(e.target.value)} placeholder="0.00" />
                         </Form.Item>
                     </Col>
                     <Col span={24}>
