@@ -90,7 +90,7 @@ export const ActiveOrders = () => {
             console.log(e)
         }
         setCancelling(false);
-    }, [])
+    }, [address])
     useEffect(() => {
         if (interval) {
             clearInterval(interval);
