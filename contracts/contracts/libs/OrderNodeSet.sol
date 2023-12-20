@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+// OrderNodeSet stores a set of users' order
+// and map orders to price indexes
 library OrderNodeSet {
   struct Node {
     bytes32 orderId;
@@ -15,15 +17,18 @@ library OrderNodeSet {
     mapping(bytes32 => uint256) indexes;
   }
 
+  // Whether an order id existed.
   function _contains(Set storage _set, bytes32 _orderId) internal view returns (bool) {
     // 0 is a sentinel value
     return _set.indexes[_orderId] != 0;
   }
 
+  // Get an order by index
   function _at(Set storage _set, address _user, uint256 _index) internal view returns (Node memory) {
     return _set.orders[_user][_index];
   }
 
+  // New user order.
   function _add(
     Set storage _set,
     address _user,
@@ -42,6 +47,7 @@ library OrderNodeSet {
     }
   }
 
+  // Remove an user's an order.
   function _remove(Set storage _set, address _user, bytes32 _orderId) internal returns (bool) {
     uint256 orderIndex = _set.indexes[_orderId];
 
@@ -70,6 +76,7 @@ library OrderNodeSet {
     }
   }
 
+  // Change volume of an order
   function _addVolume(Set storage _set, address _user, bytes32 _orderId, uint256 _volume) internal returns (bool) {
     uint256 orderIndex = _set.indexes[_orderId];
 
@@ -81,6 +88,7 @@ library OrderNodeSet {
     }
   }
 
+  // Change volume of an order
   function _subVolume(Set storage _set, address _user, bytes32 _orderId, uint256 _volume) internal returns (bool) {
     uint256 orderIndex = _set.indexes[_orderId];
 

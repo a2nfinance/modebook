@@ -14,7 +14,7 @@ Test tokens (WETH & USDM): [Faucets](https://faucet.modebook.a2n.finance/)
 ModeBook has utilized SFS as for all smart contracts, [more details can be found here](./contracts/README.md).
 
 ## System architecture
-![](./01_onemes_workflow.jpg)
+![](./architecture.jpg)
 
 ## Prerequisites
 

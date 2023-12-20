@@ -14,7 +14,13 @@ import "./libs/BookNode.sol";
 
 import "./SFSRegister.sol";
 
+/**
+ * @title Token Pair contract
+ * @author levia2n
+ * @notice A token pair is created by the PairFactory contract.
+ */
 contract Pair is IPair, IUser, ISFS, Ownable {
+  // Mode SFS contract address.
   address public sfsAddress;
   address public feeReceiver;
   address public factory;
@@ -38,16 +44,28 @@ contract Pair is IPair, IUser, ISFS, Ownable {
   BookNode.Node[] private _buyOB;
 
   // Modifiers
+
+  // Whether a token is in this pair.
   modifier onlyTokenInPool(address _tokenAddress) {
     require(_tokenAddress == tokenA || _tokenAddress == tokenB, "NotInPool");
     _;
   }
 
+  // Whether a price index is existing.
   modifier priceMatchIndex(uint256 _priceIdx, uint32 _price) {
     require(_buyOB[_priceIdx].price == _price && _sellOB[_priceIdx].price == _price, "Price does not match the index");
     _;
   }
 
+  /**
+   * Initilize the contract state and register this contract to the SFS contract
+   * @param _tokenA first token
+   * @param _tokenB secon token
+   * @param _admin this contract's admin
+   * @param _sfsAddress SFS contract address
+   * @param _feeReceiver Fee receiver address
+   * @param _feeRate Fee rate, from 0 -> 999.
+   */
   constructor(
     address _tokenA,
     address _tokenB,
@@ -59,7 +77,8 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     tokenA = _tokenA;
     tokenB = _tokenB;
     factory = msg.sender;
-    feeRate = _feeRate; // 999 is 0.1% = (1000 - 999)/1000
+    // if the fee rate is 999 then user will be charged 0.1% ((1000 - 999)/1000) each transaction.
+    feeRate = _feeRate;
     sfsAddress = _sfsAddress;
     feeReceiver = _feeReceiver;
 
@@ -68,6 +87,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     _transferOwnership(_admin);
   }
 
+  // Only the admin can change
   function changeReceiver(address _newReceiver) external override onlyOwner returns (bool) {
     require(feeReceiver != _newReceiver, "feeReceiver==_newReceiver");
     require(_newReceiver != address(0), "address(0)");
@@ -77,6 +97,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  // Only the admin can change
   function changeSFSAddress(address _newSFSAddress) external override onlyOwner returns (bool) {
     require(sfsAddress != _newSFSAddress, "sfsAddress==_newSFSAddress");
     require(_newSFSAddress != address(0), "address(0)");
@@ -86,18 +107,21 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  // Only the admin can change
   function changeFeeRate(uint16 _feeRate) external override onlyOwner returns (bool) {
     require(feeRate != _feeRate, "feeRate==_feeRate");
     feeRate = _feeRate;
     return true;
   }
 
+  // Deposit an amount of ERC-20 token.
   function _deposit(address _tokenAddress, uint256 _amount) private onlyTokenInPool(_tokenAddress) returns (bool) {
     IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _amount);
     deposits[msg.sender][_tokenAddress] += _amount;
     return true;
   }
 
+  // Withdraw an amount of ERC-20 token.
   function _withdraw(address _tokenAddress, uint256 _amount) private onlyTokenInPool(_tokenAddress) returns (bool) {
     require(deposits[msg.sender][_tokenAddress] >= _amount, "ExceedsAmount");
     IERC20(_tokenAddress).transfer(msg.sender, _amount);
@@ -105,6 +129,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  // Check an account's funds.
   function getDeposits(
     address _account,
     address _token
@@ -112,6 +137,12 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return deposits[_account][_token];
   }
 
+  /**
+   * New sell order
+   * @param _price price of token A using Token B
+   * @param _sellAmount sell amount
+   * @param _priceIdx a price index in the Orderbook.
+   */
   function newSellOrder(
     uint32 _price,
     uint256 _sellAmount,
@@ -127,6 +158,8 @@ contract Pair is IPair, IUser, ISFS, Ownable {
       return true;
     }
     uint256 len = orderBook[tokenB][_price].length;
+
+    // Check each sell order using token B.
     for (uint8 i = 0; i < len; i++) {
       bytes32 head_ = orderBook[tokenB][_price].head;
       LinkedList.Order memory o = orderBook[tokenB][_price].nodes[head_].order;
@@ -174,6 +207,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  // Get all sell orders using a price index
   function getAllSellOrders(uint32 _price) external view override returns (LinkedList.Order[] memory) {
     LinkedList.Order[] memory orders = new LinkedList.Order[](orderBook[tokenA][_price].length);
 
@@ -195,6 +229,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return sellOrders;
   }
 
+  // Cancel a sell order
   function deleteSellOrder(
     uint32 _price,
     bytes32 _orderId,
@@ -212,12 +247,17 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  /**
+   * New buy order
+   * @param _price price of token A using Token B
+   * @param _buyAmount buy amount
+   * @param _priceIdx a price index in the Orderbook.
+   */
   function newBuyOrder(
     uint32 _price,
     uint256 _buyAmount,
     uint256 _priceIdx
   ) external override priceMatchIndex(_priceIdx, _price) returns (bool) {
-    // no fee under 1000
     _deposit(tokenB, (_price * _buyAmount) / 100);
     uint256 currentFee = ((_price * (_buyAmount * (1000 - feeRate))) / 1000) / 100;
     tokenBaccumulatedFee += currentFee;
@@ -273,6 +313,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return true;
   }
 
+  // Cancel a buy order
   function deleteBuyOrder(
     uint32 _price,
     bytes32 _orderId,
@@ -302,6 +343,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return orders;
   }
 
+  // get all active orders of an account.
   function activeBuyOrders() external view override returns (OrderNodeSet.Node[] memory) {
     OrderNodeSet.Node[] memory buyOrders = new OrderNodeSet.Node[](_buyOrders.orders[msg.sender].length);
 
@@ -315,6 +357,7 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     return (_sellOB, _buyOB);
   }
 
+  // Initialize a new price index.
   function initBookNode(uint32 _price) external override returns (uint256) {
     if (orderBook[tokenA][_price].tail == "" && orderBook[tokenB][_price].tail == "") {
       orderBook[tokenA][_price].tail = "1"; // placeholder
@@ -334,7 +377,8 @@ contract Pair is IPair, IUser, ISFS, Ownable {
     revert("Price is not in the array");
   }
 
-  function collectFees() external override returns (bool) {
+  // Collect fees to the admin address.
+  function collectFees() external override onlyOwner returns (bool) {
     IERC20(tokenA).transfer(msg.sender, tokenAaccumulatedFee);
     IERC20(tokenB).transfer(msg.sender, tokenBaccumulatedFee);
     tokenAaccumulatedFee = 0;
