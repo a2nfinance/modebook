@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-// OrderNodeSet stores a set of users' order
+// OrderNodeSet stores a set of users' orders
 // and map orders to price indexes
 library OrderNodeSet {
   struct Node {
@@ -23,7 +23,7 @@ library OrderNodeSet {
     return _set.indexes[_orderId] != 0;
   }
 
-  // Get an order by index
+  // Get an order by its index
   function _at(Set storage _set, address _user, uint256 _index) internal view returns (Node memory) {
     return _set.orders[_user][_index];
   }

@@ -16,6 +16,8 @@ ModeBook has utilized SFS as for all smart contracts, [more details can be found
 ## System architecture
 ![](./architecture.jpg)
 
+ModeBook is a fully on-chain Orderbook application; therefore, all interactions will connect to smart contracts directly. We use Solidity and Hardhat to develop smart contracts. For the front-end development, we use NextJS and Wagmi. 
+
 ## Prerequisites
 
 To understand source code, you should have basic knowlege of:
@@ -26,7 +28,7 @@ To understand source code, you should have basic knowlege of:
 - React
 - Next JS
 - Wagmi
-- Linux & docker commands.
+- Linux commands.
 
 ## Installation steps
 **Step 1: Install Dev environment**
@@ -34,8 +36,6 @@ To understand source code, you should have basic knowlege of:
 - Install NodeJS (16+)
 - Install VisualCode studio.
 - Install Solidity & Hardhat addons for VisualCode.
-
-
 
 **Step 2: Install libraries**
 - Go to each folder
