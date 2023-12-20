@@ -115,13 +115,13 @@ export const ActiveOrders = () => {
             }
         },
         {
-            title: 'Price (USD)',
+            title: 'Price (USDM)',
             dataIndex: 'price',
             key: 'price',
             render: (price: number) => (price / 100),
         },
         {
-            title: 'Size (ETH)',
+            title: 'Size (WETH)',
             dataIndex: 'volume',
             key: 'volume',
             render: (_, record) => {
@@ -133,7 +133,7 @@ export const ActiveOrders = () => {
             }
         },
         {
-            title: 'Value (USD)',
+            title: 'Value (USDM)',
             dataIndex: 'value',
             key: 'value',
             render: (_, record) => {

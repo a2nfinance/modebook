@@ -243,7 +243,7 @@ export const OrderForm = () => {
             <Form layout="vertical">
                 <Row gutter={12}>
                     <Col span={12}>
-                        <Form.Item label="ETH">
+                        <Form.Item label="WETH">
                             <Input size="large" type="number" onChange={(e) => handleChangeEth(e.target.value)} value={ethSize} placeholder="0.000" />
                         </Form.Item>
                     </Col>
