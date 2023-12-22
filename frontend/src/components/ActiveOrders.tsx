@@ -115,7 +115,7 @@ export const ActiveOrders = () => {
             }
         },
         {
-            title: 'Price (USDM)',
+            title: 'Price (USD)',
             dataIndex: 'price',
             key: 'price',
             render: (price: number) => (price / 100),
