@@ -254,7 +254,7 @@ export const OrderForm = () => {
                     </Col>
                     <Col span={24}>
                         <Form.Item label="Limit Price">
-                            <Input size="large" type="number" value={limitPrice} onChange={(e) => handleChangeLimitPrice(e.target.value)} placeholder="0.00" suffix="USDM" />
+                            <Input size="large" type="number" value={limitPrice} onChange={(e) => handleChangeLimitPrice(e.target.value)} placeholder="0.00" suffix="USD" />
                         </Form.Item>
                     </Col>
 
