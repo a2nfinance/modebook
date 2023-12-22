@@ -42,7 +42,7 @@ export const OrderBook = () => {
 
     const sellOBColumns = [
         {
-            title: 'Price (USDM)',
+            title: 'Price (USD)',
             dataIndex: 'price',
             key: 'price',
             render: (price: number) => <span style={{ color: "red" }}>{price / 100}</span>,
@@ -57,7 +57,7 @@ export const OrderBook = () => {
 
     const buyOBColumns = [
         {
-            title: 'Price (USDM)',
+            title: 'Price (USD)',
             dataIndex: 'price',
             key: 'price',
             render: (price: number) => <span style={{ color: "#3a2ad3" }}>{price / 100}</span>,
